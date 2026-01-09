@@ -1,29 +1,65 @@
 import { useEffect, useState } from "react";
 
+const GAME_TIME = 30; // seconds
+
 export default function App() {
   const [score, setScore] = useState(0);
   const [activeSpot, setActiveSpot] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(GAME_TIME);
+  const [isPlaying, setIsPlaying] = useState(true);
 
+  // Corgi popping logic
   useEffect(() => {
+    if (!isPlaying) return;
+
     const interval = setInterval(() => {
       const randomSpot = Math.floor(Math.random() * 9);
       setActiveSpot(randomSpot);
     }, 800);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isPlaying]);
+
+  // Countdown timer
+  useEffect(() => {
+    if (!isPlaying || timeLeft <= 0) return;
+
+    const timer = setTimeout(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [timeLeft, isPlaying]);
+
+  // End game when time runs out
+  useEffect(() => {
+    if (timeLeft === 0) {
+      setIsPlaying(false);
+      setActiveSpot(null);
+    }
+  }, [timeLeft]);
 
   const handleClick = (index) => {
+    if (!isPlaying) return;
+
     if (index === activeSpot) {
       setScore((prev) => prev + 1);
       setActiveSpot(null);
     }
   };
 
+  const resetGame = () => {
+    setScore(0);
+    setTimeLeft(GAME_TIME);
+    setIsPlaying(true);
+    setActiveSpot(null);
+  };
+
   return (
     <div style={styles.container}>
       <h1>Corgi Pop! 🐶</h1>
       <h2>Score: {score}</h2>
+      <h2>Time Left: {timeLeft}s</h2>
 
       <div style={styles.grid}>
         {[...Array(9)].map((_, index) => (
@@ -32,10 +68,19 @@ export default function App() {
             style={styles.cell}
             onClick={() => handleClick(index)}
           >
-            {activeSpot === index ? "🐶" : ""}
+            {activeSpot === index && isPlaying ? "🐶" : ""}
           </div>
         ))}
       </div>
+
+      {!isPlaying && (
+        <>
+          <h2>Game Over!</h2>
+          <button style={styles.button} onClick={resetGame}>
+            Play Again
+          </button>
+        </>
+      )}
     </div>
   );
 }
@@ -64,5 +109,11 @@ const styles = {
     justifyContent: "center",
     cursor: "pointer",
     userSelect: "none",
+  },
+  button: {
+    marginTop: "20px",
+    padding: "10px 20px",
+    fontSize: "16px",
+    cursor: "pointer",
   },
 };
