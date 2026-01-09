@@ -1,35 +1,68 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [score, setScore] = useState(0);
+  const [activeSpot, setActiveSpot] = useState(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const randomSpot = Math.floor(Math.random() * 9);
+      setActiveSpot(randomSpot);
+    }, 800);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleClick = (index) => {
+    if (index === activeSpot) {
+      setScore((prev) => prev + 1);
+      setActiveSpot(null);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div style={styles.container}>
+      <h1>Corgi Pop! 🐶</h1>
+      <h2>Score: {score}</h2>
+
+      <div style={styles.grid}>
+        {[...Array(9)].map((_, index) => (
+          <div
+            key={index}
+            style={styles.cell}
+            onClick={() => handleClick(index)}
+          >
+            {activeSpot === index ? "🐶" : ""}
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+const styles = {
+  container: {
+    textAlign: "center",
+    fontFamily: "Arial, sans-serif",
+    marginTop: "30px",
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 100px)",
+    gap: "15px",
+    justifyContent: "center",
+    marginTop: "20px",
+  },
+  cell: {
+    width: "100px",
+    height: "100px",
+    backgroundColor: "#ffe0b2",
+    borderRadius: "12px",
+    fontSize: "48px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    userSelect: "none",
+  },
+};
