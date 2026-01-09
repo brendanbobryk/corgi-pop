@@ -87,9 +87,13 @@ export default function App() {
 
 const styles = {
   container: {
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     textAlign: "center",
     fontFamily: "Arial, sans-serif",
-    marginTop: "30px",
   },
   grid: {
     display: "grid",
