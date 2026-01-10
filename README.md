@@ -19,11 +19,11 @@ This project is designed to practice React fundamentals like state, effects, tim
 
 ## How to Run
 
-1. Clone the repo:
+1. Clone the repository:
    ```bash
    git clone https://github.com/brendanbobryk/corgi-pop.git
 
-2. Navigate into the project folder:
+2. Navigate to the project folder:
     ```bash
     cd corgi-pop
 
