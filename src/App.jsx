@@ -63,7 +63,10 @@ export default function App() {
   return (
     <div className="app">
       <div className="game-container">
-        <h1 className="title">Corgi Pop! 🐶</h1>
+        <h1 className="title">
+          <span className="title-text">Corgi Pop!</span>{" "}
+          <span className="title-emoji">🐶</span>
+        </h1>
 
         <div className="stats">
           <div>Score <span>{score}</span></div>

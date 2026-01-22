@@ -34,10 +34,18 @@ html, body {
   margin: 0 0 12px;
   font-size: 36px;
   font-weight: 800;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+}
+
+.title-text {
   background: linear-gradient(90deg, #ffb347, #ff8c00);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+}
+
+.title-emoji {
+  font-size: 36px;
+  vertical-align: middle;
 }
 
 /* Stats */
