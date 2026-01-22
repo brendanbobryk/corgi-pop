@@ -8,8 +8,11 @@ This project is designed to practice React fundamentals like state, effects, tim
 - Random corgi appearances
 - Click the corgi to score points
 - Countdown timer
+- Start and Restart game buttons
+- Visible grid before the game starts
+- Persistent high score tracking across sessions
 - Game ends when time runs out
-- Simple, centered layout
+- Simple, centered, and polished layout with responsive design
 
 ## Technologies Used
 
