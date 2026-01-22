@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./App.css";
 
 const GAME_TIME = 30; // seconds
 
@@ -63,69 +64,40 @@ export default function App() {
   };
 
   return (
-    <div style={styles.container}>
-      <h1>Corgi Pop! 🐶</h1>
+    <div className="app">
+      <div className="game-container">
+        <h1>Corgi Pop! 🐶</h1>
 
-      <h2>Score: {score}</h2>
-      <h2>Time Left: {timeLeft}s</h2>
+        <div className="stats">
+          <div>Score: <span>{score}</span></div>
+          <div>Time: <span>{timeLeft}s</span></div>
+        </div>
 
-      <div style={styles.grid}>
-        {[...Array(9)].map((_, index) => (
-          <div
-            key={index}
-            style={styles.cell}
-            onClick={() => handleClick(index)}
-          >
-            {activeSpot === index && isPlaying ? "🐶" : ""}
-          </div>
-        ))}
+        <div className="grid">
+          {[...Array(9)].map((_, index) => (
+            <div
+              key={index}
+              className={`cell ${
+                activeSpot === index && isPlaying ? "active" : ""
+              }`}
+              onClick={() => handleClick(index)}
+            >
+              {activeSpot === index && isPlaying ? "🐶" : ""}
+            </div>
+          ))}
+        </div>
+
+        <button
+          className="primary-btn"
+          onClick={isPlaying ? resetGame : startGame}
+        >
+          {isPlaying ? "Restart Game" : "Start Game"}
+        </button>
+
+        {!isPlaying && timeLeft === 0 && (
+          <p className="game-over">Game Over!</p>
+        )}
       </div>
-
-      <button
-        style={styles.button}
-        onClick={isPlaying ? resetGame : startGame}
-      >
-        {isPlaying ? "Restart Game" : "Start Game"}
-      </button>
-
-      {!isPlaying && timeLeft === 0 && <h2>Game Over!</h2>}
     </div>
   );
 }
-
-const styles = {
-  container: {
-    minHeight: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    fontFamily: "Arial, sans-serif",
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 100px)",
-    gap: "15px",
-    justifyContent: "center",
-    marginTop: "20px",
-  },
-  cell: {
-    width: "100px",
-    height: "100px",
-    backgroundColor: "#ffe0b2",
-    borderRadius: "12px",
-    fontSize: "48px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
-    userSelect: "none",
-  },
-  button: {
-    marginTop: "20px",
-    padding: "10px 20px",
-    fontSize: "16px",
-    cursor: "pointer",
-  },
-};
