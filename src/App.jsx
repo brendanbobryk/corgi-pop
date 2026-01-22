@@ -9,7 +9,6 @@ export default function App() {
   const [timeLeft, setTimeLeft] = useState(GAME_TIME);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // Corgi popping logic
   useEffect(() => {
     if (!isPlaying) return;
 
@@ -21,7 +20,6 @@ export default function App() {
     return () => clearInterval(interval);
   }, [isPlaying]);
 
-  // Countdown timer
   useEffect(() => {
     if (!isPlaying || timeLeft <= 0) return;
 
@@ -32,7 +30,6 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [timeLeft, isPlaying]);
 
-  // End game when time runs out
   useEffect(() => {
     if (timeLeft === 0) {
       setIsPlaying(false);
@@ -66,11 +63,11 @@ export default function App() {
   return (
     <div className="app">
       <div className="game-container">
-        <h1>Corgi Pop! 🐶</h1>
+        <h1 className="title">Corgi Pop! 🐶</h1>
 
         <div className="stats">
-          <div>Score: <span>{score}</span></div>
-          <div>Time: <span>{timeLeft}s</span></div>
+          <div>Score <span>{score}</span></div>
+          <div>Time <span>{timeLeft}s</span></div>
         </div>
 
         <div className="grid">
