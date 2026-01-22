@@ -73,14 +73,11 @@ export default function App() {
         ))}
       </div>
 
-      {!isPlaying && (
-        <>
-          <h2>Game Over!</h2>
-          <button style={styles.button} onClick={resetGame}>
-            Play Again
-          </button>
-        </>
-      )}
+      <button style={styles.button} onClick={resetGame}>
+        Restart Game
+      </button>
+
+      {!isPlaying && <h2>Game Over!</h2>}
     </div>
   );
 }
