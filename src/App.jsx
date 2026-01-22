@@ -7,7 +7,6 @@ export default function App() {
   const [activeSpot, setActiveSpot] = useState(null);
   const [timeLeft, setTimeLeft] = useState(GAME_TIME);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [hasStarted, setHasStarted] = useState(false);
 
   // Corgi popping logic
   useEffect(() => {
@@ -53,7 +52,6 @@ export default function App() {
     setScore(0);
     setTimeLeft(GAME_TIME);
     setActiveSpot(null);
-    setHasStarted(true);
     setIsPlaying(true);
   };
 
@@ -62,44 +60,35 @@ export default function App() {
     setTimeLeft(GAME_TIME);
     setActiveSpot(null);
     setIsPlaying(false);
-    setHasStarted(false);
   };
 
   return (
     <div style={styles.container}>
       <h1>Corgi Pop! 🐶</h1>
 
-      {!hasStarted ? (
-        <>
-          <p>Click the corgi as fast as you can before time runs out!</p>
-          <button style={styles.button} onClick={startGame}>
-            Start Game
-          </button>
-        </>
-      ) : (
-        <>
-          <h2>Score: {score}</h2>
-          <h2>Time Left: {timeLeft}s</h2>
+      <h2>Score: {score}</h2>
+      <h2>Time Left: {timeLeft}s</h2>
 
-          <div style={styles.grid}>
-            {[...Array(9)].map((_, index) => (
-              <div
-                key={index}
-                style={styles.cell}
-                onClick={() => handleClick(index)}
-              >
-                {activeSpot === index && isPlaying ? "🐶" : ""}
-              </div>
-            ))}
+      <div style={styles.grid}>
+        {[...Array(9)].map((_, index) => (
+          <div
+            key={index}
+            style={styles.cell}
+            onClick={() => handleClick(index)}
+          >
+            {activeSpot === index && isPlaying ? "🐶" : ""}
           </div>
+        ))}
+      </div>
 
-          <button style={styles.button} onClick={resetGame}>
-            Restart Game
-          </button>
+      <button
+        style={styles.button}
+        onClick={isPlaying ? resetGame : startGame}
+      >
+        {isPlaying ? "Restart Game" : "Start Game"}
+      </button>
 
-          {!isPlaying && timeLeft === 0 && <h2>Game Over!</h2>}
-        </>
-      )}
+      {!isPlaying && timeLeft === 0 && <h2>Game Over!</h2>}
     </div>
   );
 }
