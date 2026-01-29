@@ -14,6 +14,7 @@ export default function App() {
   const [countdown, setCountdown] = useState(null);
   const [showRestartConfirm, setShowRestartConfirm] = useState(false);
   const [missIndex, setMissIndex] = useState(null);
+  const [lastScore, setLastScore] = useState(null); // NEW
 
   // Corgi popping logic (no consecutive repeats)
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function App() {
     if (timeLeft === 0) {
       setIsPlaying(false);
       setActiveSpot(null);
+      setLastScore(score); // SAVE last score
 
       if (score > highScore) {
         setHighScore(score);
@@ -165,6 +167,11 @@ export default function App() {
             <p>
               Final Score: <strong>{score}</strong>
             </p>
+            {lastScore !== null && (
+              <p>
+                Last Game Score: <strong>{lastScore}</strong>
+              </p>
+            )}
             {score === highScore && score > 0 && (
               <p className="new-high">🎉 New High Score!</p>
             )}
