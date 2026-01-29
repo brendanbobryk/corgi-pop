@@ -14,13 +14,18 @@ export default function App() {
   const [countdown, setCountdown] = useState(null);
   const [showRestartConfirm, setShowRestartConfirm] = useState(false);
 
-  // Corgi popping logic
+  // Corgi popping logic (no consecutive repeats)
   useEffect(() => {
     if (!isPlaying) return;
 
     const interval = setInterval(() => {
-      const randomSpot = Math.floor(Math.random() * 9);
-      setActiveSpot(randomSpot);
+      setActiveSpot((prev) => {
+        let next;
+        do {
+          next = Math.floor(Math.random() * 9);
+        } while (next === prev);
+        return next;
+      });
     }, 800);
 
     return () => clearInterval(interval);
@@ -96,11 +101,9 @@ export default function App() {
           <div>
             Score <span>{score}</span>
           </div>
-
           <div>
             High <span>{highScore}</span>
           </div>
-
           <div className={timeLeft <= 5 ? "warning" : ""}>
             Time <span>{timeLeft}s</span>
           </div>
