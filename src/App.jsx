@@ -96,10 +96,12 @@ export default function App() {
           <div>
             Score <span>{score}</span>
           </div>
+
           <div>
             High <span>{highScore}</span>
           </div>
-          <div>
+
+          <div className={timeLeft <= 5 ? "warning" : ""}>
             Time <span>{timeLeft}s</span>
           </div>
         </div>
