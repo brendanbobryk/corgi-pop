@@ -126,6 +126,7 @@ export default function App() {
 
         <button
           className="primary-btn"
+          disabled={countdown !== null}
           onClick={() => {
             if (isPlaying) {
               setShowRestartConfirm(true);
