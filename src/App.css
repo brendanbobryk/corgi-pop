@@ -123,6 +123,19 @@ html, body {
   animation: pop 0.15s ease-out;
 }
 
+.cell.miss {
+  background: linear-gradient(145deg, #ff6b6b, #c0392b);
+  animation: shake 0.2s ease;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
 @keyframes pop {
   from { transform: scale(0.85); }
   to { transform: scale(1.12); }

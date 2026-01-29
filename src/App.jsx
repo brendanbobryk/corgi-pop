@@ -13,6 +13,7 @@ export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [countdown, setCountdown] = useState(null);
   const [showRestartConfirm, setShowRestartConfirm] = useState(false);
+  const [missIndex, setMissIndex] = useState(null);
 
   // Corgi popping logic (no consecutive repeats)
   useEffect(() => {
@@ -78,6 +79,9 @@ export default function App() {
     if (index === activeSpot) {
       setScore((prev) => prev + 1);
       setActiveSpot(null);
+    } else {
+      setMissIndex(index);
+      setTimeout(() => setMissIndex(null), 200);
     }
   };
 
@@ -115,6 +119,7 @@ export default function App() {
               key={index}
               className={`cell
                 ${activeSpot === index && isPlaying ? "active" : ""}
+                ${missIndex === index ? "miss" : ""}
                 ${!isPlaying ? "disabled" : ""}
               `}
               onClick={() => handleClick(index)}
