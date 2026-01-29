@@ -11,6 +11,8 @@ export default function App() {
   const [activeSpot, setActiveSpot] = useState(null);
   const [timeLeft, setTimeLeft] = useState(GAME_TIME);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [countdown, setCountdown] = useState(null);
+  const [showRestartConfirm, setShowRestartConfirm] = useState(false);
 
   // Corgi popping logic
   useEffect(() => {
@@ -46,7 +48,24 @@ export default function App() {
         localStorage.setItem("corgiHighScore", score);
       }
     }
-  }, [timeLeft]);
+  }, [timeLeft, score, highScore]);
+
+  // Pre-game countdown
+  useEffect(() => {
+    if (countdown === null) return;
+
+    if (countdown === 0) {
+      setCountdown(null);
+      setIsPlaying(true);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [countdown]);
 
   const handleClick = (index) => {
     if (!isPlaying) return;
@@ -61,7 +80,8 @@ export default function App() {
     setScore(0);
     setTimeLeft(GAME_TIME);
     setActiveSpot(null);
-    setIsPlaying(true);
+    setShowRestartConfirm(false);
+    setCountdown(3);
   };
 
   return (
@@ -73,16 +93,25 @@ export default function App() {
         </h1>
 
         <div className="stats">
-          <div>Score <span>{score}</span></div>
-          <div>High <span>{highScore}</span></div>
-          <div>Time <span>{timeLeft}s</span></div>
+          <div>
+            Score <span>{score}</span>
+          </div>
+          <div>
+            High <span>{highScore}</span>
+          </div>
+          <div>
+            Time <span>{timeLeft}s</span>
+          </div>
         </div>
 
         <div className="grid">
           {[...Array(9)].map((_, index) => (
             <div
               key={index}
-              className={`cell ${activeSpot === index && isPlaying ? "active" : ""}`}
+              className={`cell
+                ${activeSpot === index && isPlaying ? "active" : ""}
+                ${!isPlaying ? "disabled" : ""}
+              `}
               onClick={() => handleClick(index)}
             >
               {activeSpot === index && isPlaying ? "🐶" : ""}
@@ -92,13 +121,43 @@ export default function App() {
 
         <button
           className="primary-btn"
-          onClick={startOrResetGame}
+          onClick={() => {
+            if (isPlaying) {
+              setShowRestartConfirm(true);
+            } else {
+              startOrResetGame();
+            }
+          }}
         >
           {isPlaying ? "Restart Game" : "Start Game"}
         </button>
 
+        {showRestartConfirm && (
+          <div className="confirm">
+            <p>Restart the game?</p>
+            <div className="confirm-buttons">
+              <button onClick={startOrResetGame}>Yes</button>
+              <button onClick={() => setShowRestartConfirm(false)}>No</button>
+            </div>
+          </div>
+        )}
+
+        {countdown !== null && (
+          <div className="countdown">
+            {countdown === 0 ? "GO!" : countdown}
+          </div>
+        )}
+
         {!isPlaying && timeLeft === 0 && (
-          <p className="game-over">Game Over!</p>
+          <div className="game-over">
+            <h2>Game Over!</h2>
+            <p>
+              Final Score: <strong>{score}</strong>
+            </p>
+            {score === highScore && score > 0 && (
+              <p className="new-high">🎉 New High Score!</p>
+            )}
+          </div>
         )}
       </div>
     </div>
